@@ -1,0 +1,189 @@
+<?php
+
+function poeticsoft_telegram_calendar(WP_REST_Request $req) {
+
+  $res = new WP_REST_Response();
+
+  try {
+
+    /* --------------------------------------------------------------------
+      RULES IN WP 
+    */
+
+    global $wpdb;
+    $sql = "
+      SELECT
+        posts.ID
+      FROM
+        {$wpdb->prefix}posts AS posts
+      INNER JOIN
+        {$wpdb->prefix}postmeta AS postmeta ON posts.ID = postmeta.post_id
+      WHERE
+        posts.post_type = 'post'
+        AND posts.post_status = 'publish'
+        AND postmeta.meta_key = 'poeticsoft_post_publish_telegram_usepublishrules'
+        AND postmeta.meta_value = '1';
+    ";
+    $result = $wpdb->get_results($sql);
+
+    $postsrules = array_map(
+      function($post) {
+
+        $postid = $post->ID;
+        $postmeta = get_post_meta($postid);
+        $rules = $postmeta['poeticsoft_post_publish_telegram_publishrules'][0];
+
+        return [
+          'id' => $postid,
+          'rules' => json_decode($rules)
+        ];
+      },
+      $result
+    );
+
+    $rules = [];
+    foreach($postsrules as $postrule) {
+
+      foreach($postrule['rules'] as $index => $rule) {
+
+        $rules[] = ($index + 1) . '. ' . $rule->instructions . PHP_EOL;
+      }
+    } 
+    $rules = implode(', ', $rules); 
+
+    /* --------------------------------------------------------------------
+      PROMPT 
+    */
+      
+    $prompt = '
+A partir de las siguientes reglas dinámicas, calcula las fechas exactas válidas:
+
+REGLAS:
+
+' . 
+    $rules . 
+'Instrucciones:
+- Interpreta cuidadosamente las reglas.
+- Recorre mentalmente cada día dentro de los rangos especificados.
+- Selecciona solo los días que coincidan con el día de semana solicitado (ej. martes o domingo).
+- Asigna la hora exacta indicada en la regla.
+- Devuelve un JSON con dos claves: "fechas" y "explain".
+- No incluyas fechas fuera del rango ni repitas esta explicación.
+
+Formato requerido:
+
+{
+  "fechas": [
+    {
+      "destino": "Canal o Grupo",
+      "fecha": "YYYY-MM-DDTHH:MM:SSZ"
+    }
+  ],
+  "explain": "Cómo se interpretaron las reglas y si hubo errores."
+}';    
+ 
+    /* --------------------------------------------------------------------
+      SYSTEM 
+    */
+
+    $system = '
+Eres un asistente que programa publicaciones automáticas según reglas de tiempo específicas.
+
+Tu tarea es:
+1. Interpretar reglas dinámicas sobre días de semana, horarios y rangos de fechas.
+2. Calcular fechas exactas en formato ISO 8601 (UTC) que cumplan esas reglas.
+3. Devolver solamente un JSON con dos claves:
+   - "fechas": lista de fechas exactas con su destino ("Canal" o "Grupo").
+   - "explain": explicación breve de cómo se calcularon las fechas y si hubo errores.
+
+NO incluyas texto fuera del JSON. 
+NO inventes fechas. 
+Solo incluye fechas que:
+- Coincidan con el día de la semana y hora solicitada.
+- Estén estrictamente dentro del rango de fechas definido (incluyendo límites si así se indica).';
+    
+    $data = poeticsoft_api_data();
+    $apikey = $data['openai_apikey'];  
+
+    $body = [
+      'model' => "gpt-4-1106-preview",
+      'messages' => [
+        [ 
+          'role' => 'system', 
+          'content' => $system
+        ],
+        [ 
+          'role' => "user", 
+          'content' => $prompt 
+        ]
+      ],
+      'temperature' => 0.2,
+      'n' => 1
+    ];
+
+    $args = [
+      'method' =>'POST',
+      'headers' => [
+        'Content-Type' => 'application/json',
+        'Authorization' => 'Bearer ' . $apikey
+      ],
+      'body' => json_encode($body),
+      'timeout' => 20
+    ];
+
+    $url = 'https://api.openai.com/v1/chat/completions';
+
+    $response = wp_remote_post($url, $args);
+
+    if (is_wp_error($response)) {
+    
+      throw new Exception(
+        $response->get_error_message(), 
+        500
+      );
+    }
+
+    $responsebody = wp_remote_retrieve_body($response);
+    $responsedata = json_decode($responsebody, true);
+    $message = $responsedata['choices'][0]['message']['content'];
+    $data = json_decode($message);
+
+    $res->set_data([
+      'system' => $system,
+      'prompt' => $prompt,
+      'responsedata' => $responsedata,
+      'message' => $message,
+      'data' => $data
+    ]);
+
+    // $res->set_data([
+    //   'system' => $system,
+    //   'prompt' => $prompt
+    // ]);
+    
+  } catch (Exception $e) {
+    
+    $res->set_status($e->getCode());
+    $res->set_data($e->getMessage());
+  }
+
+  return $res;
+}
+
+add_action(
+  'rest_api_init',
+  function () {
+
+    register_rest_route(
+      'poeticsoft/telegram',
+      'calendar',
+      array(
+        array(
+          'methods'  => 'GET',
+          'callback' => 'poeticsoft_telegram_calendar',
+          'permission_callback' => '__return_true'
+        )
+      )
+    );
+  }
+);

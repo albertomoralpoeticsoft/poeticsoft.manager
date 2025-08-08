@@ -1,0 +1,257 @@
+/* ****************************
+  TODO common root in blocks 
+  */
+
+@use '~styles/root';
+@use './editor/modal';
+@use './editor/popover';
+
+.components-panel__body.poeticsoft-post-settings-telegram {
+
+  background-color: var(--color-bg);
+
+
+  .components-panel__body-title {
+
+    margin-bottom: var(--s);
+
+  }
+
+  .PublishNow {
+
+    padding: var(--s2) var(--s2) var(--s);
+    border: 1px solid var(--color-borders);
+
+    .Title {
+
+      font-weight: bold;
+      border: dotted var(--color-borders);
+      border-width: 0 0 1px 0;
+      padding: 0 0 var(--s) 0;
+    }
+
+    .components-base-control {
+
+      padding: var(--s) 0 0;
+
+      .components-base-control__field,
+      .components-base-control__help {
+
+        margin-bottom: 0;
+      }
+
+      .WherePublish {
+
+        width: 100%;
+
+        .components-input-control__container {
+
+          .components-select-control__input {
+
+            height: var(--s7);
+            padding: var(--s);
+          }
+        }
+      }
+    }
+
+    > .components-button {
+
+      width: 100%;
+      justify-content: center;
+      margin: var(--s2) 0 0 0;
+    }
+
+    .Message {
+
+      color: var(--color-error);
+      padding: var(--s) 0 0 0;
+      font-size: 0.9em;
+    }
+  }
+
+  .PublishRules {
+    
+    margin: var(--s2) 0 0 0;
+    padding: var(--s2);
+    border: 1px solid var(--color-borders);
+
+    > .components-base-control {
+
+      border: dotted var(--color-borders);
+      border-width: 0 0 1px 0;
+      margin: 0 0 var(--s15) 0;
+
+      .components-checkbox-control__label {
+
+        font-weight: bold;
+      }
+
+      .components-base-control__help {
+
+        margin-bottom: var(--s);
+      }
+    }
+
+    .Manage {
+
+      .Rules {
+        
+        display: flex;
+        justify-content: flex-end;
+        gap: var(--s05);
+        flex-wrap: wrap;
+
+        > .components-base-control {
+
+          width: 100%;
+
+          .components-base-control__field {
+
+            margin-bottom: 0;
+          }
+        }
+
+        button {
+
+          height: fit-content;
+          padding: 7px 12px 8px;
+        }
+      }
+
+      .Rule {
+        
+        margin: var(--s) 0 0 0;
+        border: dotted var(--color-borders);
+        border-width: 1px 0 0 0;
+        padding: var(--s) 0 0 0;
+
+        .RuleActive {
+
+          margin: 0 0 var(--s2) 0;
+        }
+
+        .DateFrom,
+        .DateTo {
+                    
+          .Date {
+
+            label {
+
+              display: block;
+              margin: 0 0 var(--s05) 0;
+            }
+
+            button {
+
+              width: 100%;
+              display: flex;
+              flex-direction: column;
+              height: auto;
+            }
+          }
+        }
+
+        .DateTo {
+
+          margin: var(--s) 0 0 0;
+        }
+        
+        .components-input-control__container {
+
+          .components-select-control__input[multiple] {
+
+            height: var(--s7);
+            padding: var(--s);
+          }
+        }
+
+        .WeekDay {
+
+           margin: var(--s2) 0 0 0;
+
+           label {
+
+            text-transform: none;
+            font-size: 13px !important;
+            font-weight: 400 !important;
+           }
+
+           select {
+
+            height: var(--s18) !important;
+           }
+        }
+
+        .HourMinute {
+
+          margin: var(--s2) 0 0 0;
+          display: flex;
+          gap: var(--space);
+          justify-content: space-between;
+
+          .components-base-control {
+
+            flex: 1;
+
+            .components-base-control__field {
+
+              margin-bottom: 0;
+              
+              .components-select-control {
+
+                display: flex;
+                gap: var(--s05);
+                justify-content: space-between;
+                align-items: center;
+                flex-direction: row;
+
+                .components-flex-item {
+
+                  flex: 0.8;
+                }
+
+                .components-input-control__container {
+
+                  flex: 1.2;
+
+                  .components-select-control__input  {
+
+                    height: auto;          
+                  }
+                }
+
+                &.Minute {
+
+                  .components-flex-item {
+
+                    flex: 0.8;
+
+                    label {
+
+                      padding: var(--s075);
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+
+      .UsePublishRules {
+          
+        margin: var(--s2) 0 0;
+        border: solid var(--color-borders);
+        border-width: 1px 0 0 0;
+
+        button {
+          
+          margin: var(--s2) 0 0;
+          width: 100%;
+          justify-content: center;
+        }
+      }
+    }
+  }
+}

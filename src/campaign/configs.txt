@@ -1,0 +1,12 @@
+https://chatgpt.com/c/6895fa8c-28a8-832a-a83c-925df5228b19
+
+Formatos y proporciones de publicaciones en Instagram
+Tipo de publicación	Proporción (relación de aspecto)	Tamaño máximo recomendado (px)
+Stories	9:16	1080 × 1920
+Reels	9:16	1080 × 1920
+Publicaciones (Feed)	• Cuadrado: 1:1
+• Vertical: 4:5 (o 8:10)
+• Horizontal: 1.91:1	– Cuadrado: hasta 1080 × 1080
+– Vertical: 1080 × 1350
+– Horizontal: hasta 1080 × 566
+Carrusel (Multi-imagen)	Misma proporción que la publicación individual elegida (1:1, 4:5 o 1.91:1)	Coincide con dimensiones de publicaciones (ver arriba)

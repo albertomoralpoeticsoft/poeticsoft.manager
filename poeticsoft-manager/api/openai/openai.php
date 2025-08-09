@@ -113,13 +113,13 @@ add_action(
     register_rest_route(
       'poeticsoft/openai',
       'images',
-      array(
-        array(
+      [
+        [
           'methods'  => 'GET',
           'callback' => 'poeticsoft_openai_images',
           'permission_callback' => '__return_true'
-        )
-      )
+        ]
+      ]
     );
   }
 );

@@ -129,7 +129,7 @@ function poeticsoft_twilio_api_send(WP_REST_Request $req) {
   try {     
 
     $sid = 'AC1c860a93157ed3b03311fe58fe616fc9';
-    $token = 'b00ac436aedc927caad3379781dff1ee';
+    $token = '33e57af9e0c13e708476d9c18b31112d';
     $twilio = new Client($sid, $token);
 
     $result = $twilio->messages
@@ -137,7 +137,7 @@ function poeticsoft_twilio_api_send(WP_REST_Request $req) {
       "whatsapp:+34629475867", 
       [
         "from" => "whatsapp:+14155238886",
-        "body" => "Genial ya funciona la comunicacion por whatsapp del proyecto Plenitud Sexual Activa."
+        "body" => "Recibido tu mensaje"
       ]
     );
 

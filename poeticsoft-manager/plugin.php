@@ -2,9 +2,9 @@
 
 /**
  *
- * Plugin Name: poeticsoft-manager
+ * Plugin Name: Poetic Soft Manager
  * Plugin URI: http://poeticsoft.com/plugins/poeticsoft-manager
- * Description: Poeticsoft Manager Plugin
+ * Description: Manager for Poeticsoft Partners
  * Version: 0.00
  * Author: Poeticsoft Team
  * Author URI: http://poeticsoft.com/team
@@ -45,7 +45,7 @@ function plugin_cron($text) {
   
 require_once(dirname(__FILE__) . '/setup/main.php'); 
 require_once(dirname(__FILE__) . '/api/main.php');
-require_once(dirname(__FILE__) . '/block/main.php'); 
-require_once(dirname(__FILE__) . '/settingspanel/main.php'); 
+// require_once(dirname(__FILE__) . '/block/main.php'); 
+// require_once(dirname(__FILE__) . '/settingspanel/main.php'); 
 
 register_activation_hook(__FILE__, 'poeticsoft_assistant_init');

@@ -1,0 +1,10 @@
+/*!**************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js!./src/admin/main.scss ***!
+  \**************************************************************************************************************/
+form#your-profile tr.user-syntax-highlighting-wrap,
+form#your-profile tr.user-comment-shortcuts-wrap,
+form#your-profile tr.show-admin-bar.user-admin-bar-front-wrap {
+  display: none;
+}
+
+/*# sourceMappingURL=main.css.map*/

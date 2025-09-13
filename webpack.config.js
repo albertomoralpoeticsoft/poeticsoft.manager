@@ -32,6 +32,16 @@ module.exports = env => {
 
   switch (type) {
 
+    case 'admin':
+      
+      paths.output = destdir  + '/ui/admin'
+
+      entry = {
+        main: './src/' + type + '/main.js'
+      }
+
+      break;
+
     case 'block':
       
       paths.output = destdir  + '/' + type + '/' + name + '/build'

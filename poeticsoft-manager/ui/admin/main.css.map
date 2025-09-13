@@ -1,0 +1,1 @@
+{"version":3,"file":"main.css","mappings":";;;AAEE;;;EAIE;AAFJ,C","sources":["webpack://Poeticsoft Manager Plugin/./src/admin/main.scss"],"sourcesContent":["form#your-profile {\r\n\r\n  tr.user-syntax-highlighting-wrap,\r\n  tr.user-comment-shortcuts-wrap,\r\n  tr.show-admin-bar.user-admin-bar-front-wrap {\r\n\r\n    display: none;\r\n  }\r\n}"],"names":[],"sourceRoot":""}

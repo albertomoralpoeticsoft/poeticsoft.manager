@@ -17,7 +17,7 @@ trait Poeticsoft_Manager_Trait_Utils {
     $message .= $text . PHP_EOL;
 
     file_put_contents(
-      self::$path . '/log.txt',
+      self::$dir . '/log.txt',
       $message,
       FILE_APPEND
     );

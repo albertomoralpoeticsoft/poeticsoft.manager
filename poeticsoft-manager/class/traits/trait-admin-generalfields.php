@@ -4,16 +4,17 @@ trait Poeticsoft_Manager_Trait_Admin_GeneralFields {
 
   public function register_admin_generalfields() {
 
+    // 17841477384731714
+    // IGAASbQAplbwpBZAFA3dnZAVdXNRNi04bDJkclRISktxcEFLR3V5YURRazFRM1dxbmJ3ekRxSFp5a1NHNkZAZAVzJYM2RrcDZAxRVBhQ2RxcUsyeDRVUWtCT3JpZA1UyX3hoM3pvQnFRLWxTWnJnNTlQR1lmT1ZAkZAEhlOFVDaTFPRmFNVQZDZD
+    
     add_filter(
       'admin_init', 
       function () {
 
-        $fields = [          
-
-          // 'key' => [
-          //   'title' => 'Key',
-          //   'value' => '',
-          //   'type' => ''
+        $fields = [ 
+          // 'devfacebook_app_id' => [
+          //   'title' => 'Dev Facebook APP Id',
+          //   'value' => '17841477384731714'
           // ],
         ];
 

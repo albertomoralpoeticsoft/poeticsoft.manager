@@ -2,7 +2,20 @@
 
 trait Poeticsoft_Manager_Trait_Partner_Data {  
 
-  public function register_partner_data() {  
+  public function register_partner_data() { 
+    
+    $this->metadatas = [
+      [
+        'name' => 'Teléfono',
+        'meta_key' => 'poeticsoft_manager_partner_telefono',
+        'description' => 'Teléfono de contacto.'
+      ],
+      [
+        'name' => 'Instagram',
+        'meta_key' => 'poeticsoft_manager_partner_instagram',
+        'description' => 'Instagram'
+      ]
+    ];
     
     register_meta( 
       'user', 
@@ -14,15 +27,18 @@ trait Poeticsoft_Manager_Trait_Partner_Data {
         'auth_callback' => [$this, 'auth'],
     ]);
 
-    register_meta( 
-      'user', 
-      'poeticsoft_manager_partner_telefono', 
-      [
-        'show_in_rest' => true,
-        'type' => 'string',
-        'single' => true,
-        'auth_callback' => [$this, 'auth'],
-    ]);
+    foreach($this->metadatas as $metadata) {
+
+      register_meta( 
+        'user', 
+        $metadata['meta_key'], 
+        [
+          'show_in_rest' => true,
+          'type' => 'string',
+          'single' => true,
+          'auth_callback' => [$this, 'auth'],
+      ]);
+    }
 
     add_action('admin_init', function() {
 
@@ -55,7 +71,7 @@ trait Poeticsoft_Manager_Trait_Partner_Data {
     <tr>
       <th>
         <label for="poeticsoft_manager_partner_active">
-          Partner active
+          Partner activo
         </label>
       </th>
       <td>
@@ -69,39 +85,39 @@ trait Poeticsoft_Manager_Trait_Partner_Data {
     </tr>
     <?php
 
-    /* Teléfono */
+    foreach($this->metadatas as $metadata) {
     
-    $poeticsoft_manager_partner_telefono = esc_attr(
-      get_user_meta(
-        $user->ID, 
-        'poeticsoft_manager_partner_telefono', 
-        true
-      )
-    );
-    
-    ?>
+      $value = esc_attr(
+        get_user_meta(
+          $user->ID, 
+          $metadata['meta_key'], 
+          true
+        )
+      );
       
-    <tr>
-      <th>
-        <label for="poeticsoft_manager_partner_telefono">
-          Teléfono de contacto
-        </label>
-      </th>
-      <td>
-        <input 
-          type="text" 
-          name="poeticsoft_manager_partner_telefono" 
-          id="telefono_contacto" 
-          value="<?php echo $poeticsoft_manager_partner_telefono ?>" 
-          class="regular-text" 
-        />
-        <br />
-        <span class="description">
-          Introduce tu número de contacto.
-        </span>
-      </td>
-    </tr>
-    <?php
+      ?>      
+      <tr>
+        <th>
+          <label for="<?php echo $metadata['meta_key'] ?>">
+            <?php echo $metadata['name'] ?>
+          </label>
+        </th>
+        <td>
+          <input 
+            type="text" 
+            name="<?php echo $metadata['meta_key'] ?>" 
+            id="<?php echo $metadata['meta_key'] ?>" 
+            value="<?php echo $value ?>" 
+            class="regular-text" 
+          />
+          <br />
+          <span class="description">
+            <?php echo $metadata['description'] ?>
+          </span>
+        </td>
+      </tr>
+      <?php
+    }
 
     ?>
     </table>
@@ -114,7 +130,7 @@ trait Poeticsoft_Manager_Trait_Partner_Data {
 
     /* Active partner */
 
-    $activepartner = 'off';
+    $activepartner = 'off';    
     if (
       isset($_POST['poeticsoft_manager_partner_active'])
       &&
@@ -130,13 +146,18 @@ trait Poeticsoft_Manager_Trait_Partner_Data {
       $activepartner
     );
 
-    if (isset($_POST['poeticsoft_manager_partner_telefono'])) {
+    /* Data */
 
-      update_user_meta(
-        $user_id, 
-        'poeticsoft_manager_partner_telefono', 
-        sanitize_text_field($_POST['poeticsoft_manager_partner_telefono'])
-      );
-    }
+    foreach($this->metadatas as $metadata) {
+
+      if (isset($_POST[$metadata['meta_key']])) {
+
+        update_user_meta(
+          $user_id, 
+          $metadata['meta_key'], 
+          sanitize_text_field($_POST[$metadata['meta_key']])
+        );
+      }
+    }    
   } 
 }

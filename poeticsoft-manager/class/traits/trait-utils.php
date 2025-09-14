@@ -39,8 +39,6 @@ trait Poeticsoft_Manager_Trait_Utils {
 
   public function auth(WP_REST_Request $req) {
 
-    $this->log($req->get_headers());
-
     return true;
 
     return new WP_Error(

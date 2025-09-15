@@ -10,21 +10,21 @@ trait Poeticsoft_Manager_Trait_Admin {
 
         wp_enqueue_script(
           'poeticsoft-manager-admin',
-          self::$url . 'admin/main.js',
+          self::$url . 'ui/admin/main.js',
           [        
             'jquery'
           ],
-          filemtime(self::$dir . 'admin/main.js'),
+          filemtime(self::$dir . 'ui/admin/main.js'),
           true
         );
 
         wp_enqueue_style(
           'poeticsoft-manager-admin',
-          self::$url . 'admin/main.css',
+          self::$url . 'ui/admin/main.css',
           [
             
           ],
-          filemtime(self::$dir . 'admin/main.css')
+          filemtime(self::$dir . 'ui/admin/main.css')
         );
       }
     );

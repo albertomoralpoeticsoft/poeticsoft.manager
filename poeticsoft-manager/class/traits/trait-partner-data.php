@@ -1,21 +1,38 @@
 <?php
 
-trait Poeticsoft_Manager_Trait_Partner_Data {  
+/*
 
-  public function register_partner_data() { 
+Developer Instagram 
+
+Page access token
+EAAPZBWn5Fk0ABPcLgBCqaMvzdoWPBHowwfZCHJCkxTVYwZBOSzTBgZCWRUvEshZCNoCDmoQZCIZAADkMuFwHmO7FQrSjAMwjgt3xdb65637YKtQpEZAwewiJ3e0NphAejhqZAufVKrHNH1MxDPGKeyldoiXJaZCM4vv7XgvvtgOkbswPjXg9cfnyZCrW2ZCZBO44bjM89CguROCO3Ea4jZAwpjQ6SZChUZBsxhpd4cthXs8EsVMZD
+
+Page Id
+836380879549017
+
+Instagram Business Account
+17841477384731714
+
+
+*/
+
+
+trait Poeticsoft_Manager_Trait_Partner_Data {   
     
-    $this->metadatas = [
-      [
-        'name' => 'Teléfono',
-        'meta_key' => 'poeticsoft_manager_partner_telefono',
-        'description' => 'Teléfono de contacto.'
-      ],
-      [
-        'name' => 'Instagram',
-        'meta_key' => 'poeticsoft_manager_partner_instagram',
-        'description' => 'Instagram'
-      ]
-    ];
+  private array $metadatas = [
+    [
+      'name' => 'Teléfono',
+      'meta_key' => 'poeticsoft_manager_partner_telefono',
+      'description' => 'Teléfono de contacto.'
+    ],
+    [
+      'name' => 'Facebook User Access Token',
+      'meta_key' => 'poeticsoft_manager_partner_facebook_user_accesstoken',
+      'description' => 'Developer Facebook User Access Token'
+    ]
+  ];
+
+  public function register_partner_data() {
     
     register_meta( 
       'user', 

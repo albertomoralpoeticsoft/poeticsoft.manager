@@ -7,8 +7,6 @@ require_once __DIR__ . '/traits/trait-partner.php';
 require_once __DIR__ . '/traits/trait-partner-data.php';
 require_once __DIR__ . '/traits/trait-partner-avatar.php';
 require_once __DIR__ . '/traits/trait-partner-api.php';
-require_once __DIR__ . '/traits/trait-meta.php';
-require_once __DIR__ . '/traits/trait-meta-api.php';
 
 class Poeticsoft_Manager {  
 
@@ -19,8 +17,6 @@ class Poeticsoft_Manager {
   use Poeticsoft_Manager_Trait_Partner_Data;
   use Poeticsoft_Manager_Trait_Partner_Avatar;
   use Poeticsoft_Manager_Trait_Partner_API;
-  use Poeticsoft_Manager_Trait_Meta;
-  use Poeticsoft_Manager_Trait_Meta_API;
 
   private static $instance = null;
   public static $dir;
@@ -46,8 +42,6 @@ class Poeticsoft_Manager {
     $this->register_partner_avatar();
     $this->register_partner_data();
     $this->register_partner_api();
-    $this->register_meta();
-    $this->register_meta_api();
   }    
 
   private function set_vars() {

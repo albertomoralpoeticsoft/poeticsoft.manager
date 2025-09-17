@@ -134,9 +134,7 @@ trait Poeticsoft_Manager_Trait_Partner_Avatar {
         require_once(ABSPATH . 'wp-admin/includes/file.php');
         require_once(ABSPATH . 'wp-admin/includes/image.php');
         
-        $uploaded = media_handle_upload('psm_custom_avatar_selector', 0);    
-
-        plugin_log($uploaded);
+        $uploaded = media_handle_upload('psm_custom_avatar_selector', 0);
         
         if (!is_wp_error($uploaded)) {
             

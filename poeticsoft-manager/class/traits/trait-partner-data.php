@@ -21,14 +21,19 @@ trait Poeticsoft_Manager_Trait_Partner_Data {
     
   private array $metadatas = [
     [
-      'name' => 'Teléfono',
+      'name' => 'Partner - Teléfono',
       'meta_key' => 'poeticsoft_manager_partner_telefono',
       'description' => 'Teléfono de contacto.'
     ],
     [
-      'name' => 'Facebook User Access Token',
+      'name' => 'Partner - Destinos de Publicación',
+      'meta_key' => 'poeticsoft_manager_partner_publish_destinations',
+      'description' => 'Destinos para publicaciones en redes sociales'
+    ],
+    [
+      'name' => 'Partner - Facebook User Access Token',
       'meta_key' => 'poeticsoft_manager_partner_facebook_user_accesstoken',
-      'description' => 'Developer Facebook User Access Token'
+      'description' => 'Código de acceso para Desarrollador Facebook'
     ]
   ];
 
@@ -69,7 +74,7 @@ trait Poeticsoft_Manager_Trait_Partner_Data {
 
   public function poeticsoft_manager_partner_customfields($user) {
 
-    if (user_can($user, 'administrator')) { return; }
+    // if (user_can($user, 'administrator')) { return; }
 
     ?>
       <h2>Información adicional</h2>

@@ -2,7 +2,7 @@
 
 require_once __DIR__ . '/traits/trait-utils.php';
 require_once __DIR__ . '/traits/trait-admin.php';
-require_once __DIR__ . '/traits/trait-admin-generalfields.php';
+require_once __DIR__ . '/traits/trait-generalfields.php';
 require_once __DIR__ . '/traits/trait-partner.php';
 require_once __DIR__ . '/traits/trait-partner-data.php';
 require_once __DIR__ . '/traits/trait-partner-avatar.php';
@@ -12,7 +12,7 @@ class Poeticsoft_Manager {
 
   use Poeticsoft_Manager_Trait_Utils;
   use Poeticsoft_Manager_Trait_Admin;
-  use Poeticsoft_Manager_Trait_Admin_GeneralFields;
+  use Poeticsoft_Manager_Trait_GeneralFields;
   use Poeticsoft_Manager_Trait_Partner;
   use Poeticsoft_Manager_Trait_Partner_Data;
   use Poeticsoft_Manager_Trait_Partner_Avatar;
@@ -37,7 +37,7 @@ class Poeticsoft_Manager {
     $this->set_vars();
 
     $this->register_admin();
-    $this->register_admin_generalfields();
+    $this->register_generalfields();
     $this->register_partner();
     $this->register_partner_avatar();
     $this->register_partner_data();

@@ -12,8 +12,8 @@ trait Poeticsoft_Manager_Trait_Partner_API {
       function () {
 
         register_rest_route(
-          'poeticsoft/manager',
-          'partner/list',
+          'manager/partner',
+          'list',
           array(
             array(
               'methods'  => 'GET',
@@ -24,8 +24,8 @@ trait Poeticsoft_Manager_Trait_Partner_API {
         );
 
         register_rest_route(
-          'poeticsoft/manager',
-          'partner/(?P<id>\d+)',
+          'manager/partner',
+          '(?P<id>\d+)',
           array(
             array(
               'methods'  => 'GET',
@@ -34,9 +34,59 @@ trait Poeticsoft_Manager_Trait_Partner_API {
             )
           )
         );
+
+        register_rest_route(
+          'manager/partner',
+          'data/(?P<id>\d+)',
+          array(
+            array(
+              'methods'  => 'GET',
+              'callback' => [$this, 'api_partner_data'],
+              'permission_callback' => [$this, 'auth']
+            )
+          )
+        );
+
+        register_rest_route(
+          'manager/partner',
+          'publish/post',
+          array(
+            array(
+              'methods'  => 'POST',
+              'callback' => [$this, 'api_partner_publish_post'],
+              'permission_callback' => [$this, 'auth']
+            )
+          )
+        );
       }
     );
   }  
+
+  public function api_check_user($userid) {
+    
+    if (!$userid) {
+          
+      throw new Exception('ID de usuario no válido', 400);
+    }
+    
+    $user = get_user_by('ID', $userid);
+
+    if (!$user) {
+        
+      throw new Exception('Usuario no encontrado', 404);
+    }
+
+    if (
+      !in_array('subscriber', (array) $user->roles)
+      && 
+      !in_array('administrator', (array) $user->roles)
+    ) {
+        
+      throw new Exception('Usuario no es suscriptor', 403);
+    }
+
+    return $user;
+  }
     
   public function api_partner_list(WP_REST_Request $req) {
   
@@ -45,7 +95,7 @@ trait Poeticsoft_Manager_Trait_Partner_API {
     try { 
 
       $args = array(
-        'role'   => 'subscriber',
+        'role__in' => array('subscriber', 'administrator'),
         'meta_query' => array(
           array(
             'key'     => 'poeticsoft_manager_partner_active',
@@ -107,34 +157,22 @@ trait Poeticsoft_Manager_Trait_Partner_API {
 
     try { 
 
-      $user_id = (int) $req->get_param('id');
+      $userid = (int) $req->get_param('id');
 
-      if (!$user_id) {
-          
-        throw new Exception('ID de usuario no válido', 400);
-      }
+      $user = $this->api_check_user($userid); 
       
-      $user = get_user_by('ID', $user_id);
-
-      if (!$user) {
-          
-        throw new Exception('Usuario no encontrado', 404);
-      }
-
-      if (!in_array('subscriber', (array) $user->roles)) {
-          
-        throw new Exception('Usuario no es suscriptor', 403);
-      }
-
-      
-      $active = get_user_meta($user_id, 'poeticsoft_manager_partner_active', true);
+      $active = get_user_meta(
+        $user->ID, 
+        'poeticsoft_manager_partner_active', 
+        true
+      );
 
       if ($active !== 'on') {
           
         throw new Exception('Usuario no está activo', 403);
       }
 
-      $all_meta = get_user_meta($user_id);
+      $all_meta = get_user_meta($userid);
       $filtered_meta = array();
 
       foreach($all_meta as $key => $value) {
@@ -153,6 +191,86 @@ trait Poeticsoft_Manager_Trait_Partner_API {
       );
 
       $res->set_data($data);
+
+    } catch (Exception $e) {
+      
+      $res->set_status($e->getCode());
+      $res->set_data($e->getMessage());
+    }
+
+    return $res;
+  }
+  
+  public function api_partner_data(WP_REST_Request $req) {
+  
+    $res = new WP_REST_Response();
+
+    try { 
+
+      $userid = (int) $req->get_param('id');
+
+      $user = $this->api_check_user($userid);
+      
+      $destinations = get_user_meta(
+        $user->ID, 
+        'poeticsoft_manager_partner_publish_destinations', 
+        true
+      );
+
+      if ($destinations === '') {
+          
+        throw new Exception('No se han configurado destinos', 403);
+      }
+
+      $destinationslist = array_map(
+        function($destination) {
+          
+          return trim($destination);
+        },
+        explode(',',$destinations)
+      );
+
+      $res->set_data([
+        'destinations' => $destinationslist,
+        'postpublishwhat' => [ // To do admin
+          [
+            'label' => 'Contenido',
+            'value' => 'content',
+            'default' => true
+          ],
+          [
+            'label' => 'Extracto + Imagen',
+            'value' => 'excerptimage'
+          ],
+          [
+            'label' => 'Contenido + Imagen',
+            'value' => 'contentimage'
+          ]
+        ]
+      ]);
+
+    } catch (Exception $e) {
+      
+      $res->set_status($e->getCode());
+      $res->set_data($e->getMessage());
+    }
+
+    return $res;
+  }
+  
+  public function api_partner_publish_post(WP_REST_Request $req) {
+  
+    $res = new WP_REST_Response();
+
+    try { 
+
+      $publishdata = $req->get_params();
+
+      $res->set_data([
+        'ok' => true,
+        'description' => 'Description',
+        'data' => $publishdata
+      ]);
 
     } catch (Exception $e) {
       

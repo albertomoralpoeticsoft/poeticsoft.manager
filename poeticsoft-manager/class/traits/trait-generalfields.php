@@ -1,29 +1,36 @@
 <?php
 
-trait Poeticsoft_Manager_Trait_Admin_GeneralFields { 
+trait Poeticsoft_Manager_Trait_GeneralFields { 
 
-  public function register_admin_generalfields() {
+  public function register_generalfields() {
 
-    // 17841477384731714
-    // IGAASbQAplbwpBZAFA3dnZAVdXNRNi04bDJkclRISktxcEFLR3V5YURRazFRM1dxbmJ3ekRxSFp5a1NHNkZAZAVzJYM2RrcDZAxRVBhQ2RxcUsyeDRVUWtCT3JpZA1UyX3hoM3pvQnFRLWxTWnJnNTlQR1lmT1ZAkZAEhlOFVDaTFPRmFNVQZDZD
-    
     add_filter(
       'admin_init', 
       function () {
 
-        $fields = [ 
-          // 'devfacebook_app_id' => [
-          //   'title' => 'Dev Facebook APP Id',
-          //   'value' => '17841477384731714'
-          // ],
+        $fields = [   
+          // 'key_name' => [
+          //   'hidden' => false,
+          //   'title' => 'Title',
+          //   'value' => '',
+          //   'section' => ''
+          // ]
         ];
 
+        // Todo move to common support for all poeticsoft plugins
         foreach($fields as $key => $field) {
 
           register_setting(
             'general', 
-            'poeticsoft_manager_settings_' . $key
+            'poeticsoft_manager_settings_' . $key,
+            [
+              'type' => 'string',
+              'default' => $field['value'],
+              'show_in_rest' => true
+            ]
           );
+
+          // if(isset($field['hidden'])) { continue; }
 
           add_settings_field(
             'poeticsoft_manager_settings_' . $key, 
